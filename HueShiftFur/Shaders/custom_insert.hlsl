@@ -5,7 +5,12 @@
 
 #if defined(LIL_FUR) && defined(LIL_FEATURE_MAIN_TONE_CORRECTION)
 	// Make fur color follow the same Hue Shift/Saturation/Value/Gamma as main color.
-	#define LIL_CUSTOM_FUR_RIM_COLOR float4(lilToneCorrection(_FurRimColor.rgb, _MainTexHSVG), _FurRimColor.a)
+	// Capture the original uniform or optimized constant before redefining its name.
+	float4 HueShiftFurGetRimColor()
+	{
+		return float4(lilToneCorrection(_FurRimColor.rgb, _MainTexHSVG), _FurRimColor.a);
+	}
+	#define LIL_CUSTOM_FUR_RIM_COLOR HueShiftFurGetRimColor()
 	#undef _FurRimColor
 	#define _FurRimColor LIL_CUSTOM_FUR_RIM_COLOR
 #endif
